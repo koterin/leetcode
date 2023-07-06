@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 )
@@ -10,20 +9,20 @@ import (
 func main() {
 	input := readInput()
 
-	pal, err := findPalindrom(input)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	pal := findPalindrom(input)
 
 	fmt.Println(pal)
 }
 
-func findPalindrom(input string) (string, error) {
+func findPalindrom(input string) string {
 	pals := make([]string, 0)
 
+	if isPalindrom(input) && len(input) > 1 {
+		pals = append(pals, input)
+	}
+
 	for i := 0; i < len(input); i++ {
-		for j := i + 1; j < len(input); j++ {
+		for j := i + 1; j <= len(input); j++ {
 			f := input[i:j]
 
 			if isPalindrom(f) && len(f) > 1 {
@@ -33,7 +32,7 @@ func findPalindrom(input string) (string, error) {
 	}
 
 	if len(pals) < 1 {
-		return "", errors.New("not found")
+		return input[:1]
 	}
 
 	max := pals[0]
@@ -44,7 +43,7 @@ func findPalindrom(input string) (string, error) {
 		}
 	}
 
-	return max, nil
+	return max
 }
 
 func isPalindrom(candidate string) bool {
